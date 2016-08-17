@@ -530,7 +530,7 @@
       // Update UI
       var playProgressRatio = currentTime / duration;
       var playProgressPercent = playProgressRatio * 100;
-      this.progressDiv.style.width = playProgressPercent + '%';
+      this.progressDiv.style.width = Math.min(playProgressPercent, 100) + '%';
     }.bind(this);
 
     this.getPlayerWidth = function() {
