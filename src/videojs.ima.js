@@ -501,7 +501,9 @@
      */
     var onAdPlayheadTrackerInterval_ = function() {
       var remainingTime = this.adsManager.getRemainingTime();
-      var duration =  this.currentAd.getDuration();
+      var duration =  this.currentAd.getDuration() || 0;
+      duration = Math.max(0, duration);
+      remainingTime = Math.max(0, duration);
       var currentTime = duration - remainingTime;
       currentTime = currentTime > 0 ? currentTime : 0;
       var isPod = false;
