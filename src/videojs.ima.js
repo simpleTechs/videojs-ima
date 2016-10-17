@@ -602,7 +602,7 @@
       if (this.adPlaying) {
         showPauseButton();
         if(this.adsManager) {
-            this.adsManager.pause();
+          this.adsManager.pause();
         }
         this.adPlaying = false;
       } else {
@@ -610,6 +610,8 @@
 
         if(this.adsManager) {
           this.adsManager.resume();
+        } else {
+          this.player.play();
         }
         this.adPlaying = true;
       }
@@ -681,6 +683,8 @@
       this.player.volume(percent / 100); //0-1
       if(this.adsManager) {
         this.adsManager.setVolume(percent / 100);
+      } else {
+        player.trigger('volumechange');
       }
       if (this.player.volume() == 0) {
         addClass_(this.muteDiv, 'ima-muted');
@@ -949,7 +953,9 @@
         showPauseButton();
         if(this.adsManager) {
           this.adsManager.pause();
-       }
+        } else {
+          this.player.pause();
+        }
         this.adPlaying = false;
       }
     }.bind(this);
@@ -962,6 +968,8 @@
         showPlayButton();
         if(this.adsManager) {
           this.adsManager.resume();
+        } else {
+          this.player.play();
         }
         this.adPlaying = true;
       }
