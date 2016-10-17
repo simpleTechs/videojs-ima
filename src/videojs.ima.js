@@ -50,7 +50,8 @@
     timeout: 5000,
     prerollTimeout: 100,
     adLabel: 'Advertisement',
-    showControlsForJSAds: true
+    showControlsForJSAds: true,
+    emulateTimeupdate: false
   };
 
   var init = function(options, readyCallback) {
@@ -533,6 +534,10 @@
       var playProgressRatio = currentTime / duration;
       var playProgressPercent = playProgressRatio * 100;
       this.progressDiv.style.width = Math.min(playProgressPercent, 100) + '%';
+
+      if(this.settings.emulateTimeupdate) {
+        this.player.trigger('timeupdate');
+      }
     }.bind(this);
 
     this.getPlayerWidth = function() {
