@@ -358,7 +358,9 @@
       var errorMessage = adErrorEvent.getError !== undefined ? adErrorEvent.getError() : adErrorEvent.stack;
       window.console.log('Ad error: ' + errorMessage);
       this.vjsControls.show();
-      this.adsManager.destroy();
+      if(this.adsManager) {
+        this.adsManager.destroy();
+      }
       this.adContainerDiv.style.display = 'none';
       this.player.trigger({ type: 'adserror', data: { AdError: errorMessage, AdErrorEvent: adErrorEvent }});
     }.bind(this);
@@ -377,7 +379,7 @@
      * break.
      */
     this.playAdBreak = function() {
-      if (!this.autoPlayAdBreaks) {
+      if (!this.autoPlayAdBreaks && this.adsManager) {
         this.adsManager.start();
       }
     }.bind(this);
@@ -501,10 +503,10 @@
      * @private
      */
     var onAdPlayheadTrackerInterval_ = function() {
-      var remainingTime = this.adsManager.getRemainingTime();
       var duration =  this.currentAd.getDuration() || 0;
       duration = Math.max(0, duration);
-      remainingTime = Math.max(0, duration);
+      var remainingTime = (this.adsManager && this.adsManager.getRemainingTime()) || duration;
+      remainingTime = Math.max(0, remainingTime);
       var currentTime = duration - remainingTime;
       currentTime = currentTime > 0 ? currentTime : 0;
       var isPod = false;
@@ -599,11 +601,16 @@
     var onAdPlayPauseClick_ = function() {
       if (this.adPlaying) {
         showPauseButton();
-        this.adsManager.pause();
+        if(this.adsManager) {
+            this.adsManager.pause();
+        }
         this.adPlaying = false;
       } else {
         showPlayButton();
-        this.adsManager.resume();
+
+        if(this.adsManager) {
+          this.adsManager.resume();
+        }
         this.adPlaying = true;
       }
     }.bind(this);
@@ -616,7 +623,9 @@
       if (this.adMuted) {
         addClass_(this.muteDiv, 'ima-non-muted');
         removeClass_(this.muteDiv, 'ima-muted');
-        this.adsManager.setVolume(1);
+        if(this.adsManager) {
+          this.adsManager.setVolume(1);
+        }
         // Bubble down to content player
         this.player.muted(false);
         this.adMuted = false;
@@ -624,7 +633,9 @@
       } else {
         addClass_(this.muteDiv, 'ima-muted');
         removeClass_(this.muteDiv, 'ima-non-muted');
-        this.adsManager.setVolume(0);
+        if(this.adsManager) {
+          this.adsManager.setVolume(0);
+        }
         // Bubble down to content player
         this.player.muted(true);
         this.adMuted = true;
@@ -668,7 +679,9 @@
       percent = Math.min(Math.max(percent, 0), 100);
       this.sliderLevelDiv.style.width = percent + "%";
       this.player.volume(percent / 100); //0-1
-      this.adsManager.setVolume(percent / 100);
+      if(this.adsManager) {
+        this.adsManager.setVolume(percent / 100);
+      }
       if (this.player.volume() == 0) {
         addClass_(this.muteDiv, 'ima-muted');
         removeClass_(this.muteDiv, 'ima-non-muted');
@@ -934,7 +947,9 @@
     this.pauseAd = function() {
       if (this.adsActive && this.adPlaying) {
         showPauseButton();
-        this.adsManager.pause();
+        if(this.adsManager) {
+          this.adsManager.pause();
+       }
         this.adPlaying = false;
       }
     }.bind(this);
@@ -945,7 +960,9 @@
     this.resumeAd = function() {
       if (this.adsActive && !this.adPlaying) {
         showPlayButton();
-        this.adsManager.resume();
+        if(this.adsManager) {
+          this.adsManager.resume();
+        }
         this.adPlaying = true;
       }
     }.bind(this);
