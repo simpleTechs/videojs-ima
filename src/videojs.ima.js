@@ -505,7 +505,7 @@
     var onAdPlayheadTrackerInterval_ = function() {
       var duration =  this.currentAd.getDuration() || 0;
       duration = Math.max(0, duration);
-      var remainingTime = (this.adsManager && this.adsManager.getRemainingTime()) || duration;
+      var remainingTime = (this.adsManager && this.adsManager.getRemainingTime()) || duration;
       remainingTime = Math.max(0, remainingTime);
       var currentTime = duration - remainingTime;
       currentTime = currentTime > 0 ? currentTime : 0;
