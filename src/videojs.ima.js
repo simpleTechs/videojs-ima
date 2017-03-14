@@ -492,6 +492,8 @@
      * @private
      */
     this.onAdComplete_ = function(adEvent) {
+      this.currentAd = this.currentAd || adEvent.getAd();
+
       if (this.currentAd.isLinear()) {
         clearInterval(this.adTrackingTimer);
       }
